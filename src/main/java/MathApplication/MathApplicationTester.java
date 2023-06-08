@@ -1,32 +1,32 @@
 package MathApplication;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Stack;
 
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MathApplicationTester{
 
-    @InjectMocks
-    MathApplication mathApplication = new MathApplication();
-    @Mock
+    MathApplication mathApplication;
     CalculatorService calculatorService;
+
+    @Before
+    public void setup(){
+        mathApplication = new MathApplication();
+        calculatorService = mock(CalculatorService.class);
+        mathApplication.setCalculatorService(calculatorService);
+    }
     @Test
     public void passingTest(){
         double n1 = 10.0;
         double n2 = 20.0;
-        doThrow(new RuntimeException("divide operation not implemented"))
-                .when(calculatorService).add(n1,n2);
-
-//        when(calculatorService.add(n1,n2))
-//                .thenReturn(30.0);
+        when(calculatorService.add(n1,n2))
+                .thenReturn(30.0);
 
         double expected = mathApplication.add(n1, n2);
 
