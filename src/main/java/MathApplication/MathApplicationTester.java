@@ -86,6 +86,9 @@ public class MathApplicationTester {
         double n1 = 20.0;
         double n2 = 10.0;
         Assert.assertEquals(mathApplication.add(n1,n2),30.0,0.0);
+        Assert.assertEquals(mathApplication.subtract(n1,n2),10.0,0.0);
+        Assert.assertEquals(mathApplication.multiply(n1,n2),200.0,0.0);
+        Assert.assertEquals(mathApplication.divide(n1,n2),2.0,0.0);
     }
 
 }
