@@ -19,7 +19,8 @@ public class MathApplicationTester {
     @Before
     public void setup() {
         mathApplication = new MathApplication();
-        calculatorService = mock(CalculatorService.class);
+        Calculator calculator = new Calculator();
+        calculatorService = spy(calculator);
         mathApplication.setCalculatorService(calculatorService);
     }
 
@@ -78,6 +79,13 @@ public class MathApplicationTester {
         //following will make sure that subtract is first called then add is called.
         inOrder.verify(calculatorService).subtract(n1, n2);
         inOrder.verify(calculatorService).add(n1, n2);
+    }
+
+    @Test
+    public void testForSpyCalculator(){
+        double n1 = 20.0;
+        double n2 = 10.0;
+        Assert.assertEquals(mathApplication.add(n1,n2),30.0,0.0);
     }
 
 }
