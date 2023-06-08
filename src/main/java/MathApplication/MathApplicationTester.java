@@ -6,8 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.runners.MockitoJUnitRunner;
-
-
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -19,8 +18,8 @@ public class MathApplicationTester {
     @Before
     public void setup() {
         mathApplication = new MathApplication();
-        Calculator calculator = new Calculator();
-        calculatorService = spy(calculator);
+
+        calculatorService = mock(CalculatorService.class);
         mathApplication.setCalculatorService(calculatorService);
     }
 
@@ -32,6 +31,16 @@ public class MathApplicationTester {
         double expected = mathApplication.add(n1, n2);
         Assert.assertNotEquals(expected, 30.0, 0);
     }
+
+    @Test
+    public void testForExceptionHandling(){
+        double n1 = 10.0;
+        double n2 = 20.0;
+        doThrow(new RuntimeException("Exception thrown")).when(calculatorService).add(n1, n2);
+        double expected = mathApplication.add(n1, n2);
+        Assert.assertNotEquals(expected, 30.0, 0);
+    }
+
     @Test
     public void passingTestInorder() {
         double n1 = 20.0;
@@ -82,13 +91,25 @@ public class MathApplicationTester {
     }
 
     @Test
-    public void testForSpyCalculator(){
+    public void testForSpyCalculator() {
         double n1 = 20.0;
         double n2 = 10.0;
-        Assert.assertEquals(mathApplication.add(n1,n2),30.0,0.0);
-        Assert.assertEquals(mathApplication.subtract(n1,n2),10.0,0.0);
-        Assert.assertEquals(mathApplication.multiply(n1,n2),200.0,0.0);
-        Assert.assertEquals(mathApplication.divide(n1,n2),2.0,0.0);
+        Assert.assertEquals(mathApplication.add(n1, n2), 30.0, 0.0);
+        Assert.assertEquals(mathApplication.subtract(n1, n2), 10.0, 0.0);
+        Assert.assertEquals(mathApplication.multiply(n1, n2), 200.0, 0.0);
+        Assert.assertEquals(mathApplication.divide(n1, n2), 2.0, 0.0);
+    }
+
+    @Test
+    public void testForBehaviourDrivenDev() {
+        double n1 = 20.0;
+        double n2 = 10.0;
+        //given
+        given(calculatorService.add(n1, n2)).willReturn(30.0);
+        //when
+        double expectedResult = mathApplication.add(n1, n2);
+        //then
+        Assert.assertEquals(expectedResult, 30.0, 0.0);
     }
 
 }
